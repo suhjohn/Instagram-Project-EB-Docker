@@ -12,46 +12,35 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import json
 import os
 
-# DEBUG MODE
 DEBUG = False
 
 
+# Paths
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # instagraom_project/instagram
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# instagram_project/
 ROOT_DIR = os.path.dirname(BASE_DIR)
-
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
-
-# instagra_project/.config_secret
 CONFIG_SECRET_DIR = os.path.join(ROOT_DIR, '.config_secret')
+
+with open(os.path.join(CONFIG_SECRET_DIR, 'settings_common.json'))as f:
+    config_secret_common_str = f.read()
+    f.close()
+config_secret_common = json.loads(config_secret_common_str)
 
 # instagram_project/instagram/media
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
-# 고유의 미디어 필드가 갖고있는 주소값과 URL을 붙여 사진으로 접근할 수 있는 주소를 만들어줌
 MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.path.join(ROOT_DIR, ".static_root")
-# instagram_project/instagram/static
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
-# Django에서 정적파일을 검색하고 가져올 폴더 목
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
 
-# !FILES FROM .config_secret
-with open(os.path.join(CONFIG_SECRET_DIR, 'settings_common.json'))as f:
-    config_secret_common_str = f.read()
-    f.close()
 
-config_secret_common = json.loads(config_secret_common_str)
-
-SECRET_KEY = config_secret_common['django']['secret_key']
-
-# AWS / S3 File Stroage
+# Secret Files / AWS
 AWS_ACCESS_KEY_ID = config_secret_common['aws']['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = config_secret_common['aws']['AWS_SECRET_ACCESS_KEY']
 AWS_STORAGE_BUCKET_NAME = config_secret_common['aws']['AWS_STORAGE_BUCKET_NAME']
@@ -59,16 +48,34 @@ DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
 STATICFILES_STORAGE = 'config.storages.StaticStorage'
 STATICFILES_LOCATION = 'static'
 MEDIAFILES_LOCATION = 'media'
-# DB
+
+# DB Related
+WSGI_APPLICATION = 'config.wsgi.application'
 if DEBUG == True:
     DATABASES = config_secret_common['django']['local_databases']
 else:
     DATABASES = config_secret_common['django']['deploy_databases']
 
-# ---------------------------------------
-
 # User model
 AUTH_USER_MODEL = 'member.User'
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'member.custom_backend.UsernameLoginBackend',  # our custom authentication backend
+)
 
 # Facebook Login
 FACEBOOK_APP_ID = config_secret_common['facebook']['app_id']
@@ -127,40 +134,12 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
-
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'member.custom_backend.UsernameLoginBackend',  # our custom authentication backend
-)
-
-# Password validation
-# https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.11/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
+
+SECRET_KEY = config_secret_common['django']['secret_key']
+
