@@ -1,0 +1,129 @@
+<div class="row padding-lg-container">
+    <div class="container post-container">
+        <div class="row">
+            <div id="post-{{ post.pk }}" class="col-md-12 padding-xs-container">
+                <a href="#">{{ post.author }}</a>
+                {% if post.author == user %}
+                <form class="float-right display-inline"
+                      action="{% url 'post:post_delete' post_pk=post.pk %}?next=
+            {% if post_type == 'list' %}
+            /post/#post-{{ post.pk|add:'-1' }}
+            {% elif post_type == 'detail' %}
+            /post/#post-{{ post.pk|add:'-1' }}
+            {% endif %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="fa fa-times"></button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        <!-- Image -->
+        <div class="row overflow-hidden textalign-center">
+            <img class="img-fluid" id="post-photo-{{ post.pk }}" src="{{ post.photo.url }}" alt="image">
+        </div>
+        <!-- Like & Comment -->
+        <div class="row margin-width-container">
+            <div class="">
+                <form method="POST" class="padding-xs-container inline" action="{% url 'post:post_like_toggle' post_pk=post.pk %}">
+                    {% csrf_token %}
+                    {% if user in post.liked_user.all %}
+                    <button id="like" class="font-size-md fa fa-heart"></button>
+                    {% else %}
+                    <button id="dislike" class="font-size-md fa fa-heart-o"></button>
+                    {% endif %}
+                </form>
+                <button class="padding-xs-container padding-side-sm-container font-size-md fa fa-comment-o"></button>
+            </div>
+        </div>
+        <!-- Like list row -->
+        <div class="row margin-width-container">
+            <div class="padding-xs-container">
+                <button data-toggle="modal" data-target="#myModal">좋아요 {{ post.liked_user.count }}개
+                </button>
+                <!-- Modal -->
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">좋아요</h4>
+                            </div>
+                            <div class="modal-body">
+                                {% for user in post.liked_user.all %}
+                                <div class="row">
+                                    <p>{{ user }}</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comments -->
+        <ul class="comments">
+            {% for comment in post.comments.all %}
+            <li class="col comment"><a href="">{{ comment.author }}</a> {{ comment }}
+                {% if comment.author == user %}
+                <form class="float-right display-inline" action="{% url 'post:delete_comment' comment_pk=comment.pk %}?next=
+            {% if post_type == 'list' %}
+            /post/#post-{{ post.pk }}
+            {% elif post_type == 'detail' %}
+            {% url 'post:post_detail' post_pk=post.pk %}
+            {% endif %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="fa fa-times"></button>
+                </form>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="margin-width-container comment-form-container clearfix">
+            <form method="POST" class="comment-form" action="{% url 'post:add_comment' post_pk=post.pk %}?next=
+            {% if post_type == 'list' %}
+            /post/#post-{{ post.pk }}
+            {% elif post_type == 'detail' %}
+            {% url 'post:post_detail' post_pk=post.pk %}
+            {% endif %}">
+                {{ comment_form }}
+                {% csrf_token %}
+            </form>
+
+            <!-- Modal beginning -->
+            <button class=" fa post-options
+            " type="button" class="btn btn-info btn-lg" data-toggle="modal"
+                    data-target="#myModal-{{ post.pk }}">&#xf141;
+            </button>
+            <div id="myModal-{{ post.pk }}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <button class="post-modal-option btn btn-default"><a href="{{ post.pk }}">게시물로 이동</a></button>
+                        <button class="post-modal-option btn btn-default">부적절한 콘텐츠 신고</button>
+                        <button class="post-modal-option btn btn-default">퍼가기</button>
+                        <button class="post-modal-option btn btn-default" data-dismiss="modal">취소</button>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Modal end -->
+
+        </div>
+    </div>
+</div>
+
+<script>
+$('.comment-form').keydown(function(e) {
+    if (e.keyCode == 13) {
+        $('#form').submit();
+    }
+});
+</script>

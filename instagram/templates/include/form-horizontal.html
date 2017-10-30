@@ -1,0 +1,25 @@
+{% load static %}
+
+
+<form class="form-horizontal" enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group{% if field.errors %} has-error{% endif %}">
+        <div class="col-xs-10">
+            {{ field.label }}
+            {{ field }}
+        </div>
+    </div>
+    {% endfor %}
+    <ul>
+        {% for field in form %}
+        {% if field.errors %}
+        {% for error in field.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+    </ul>
+
+    <button type="submit" class="btn btn-block btn-primary btn-post">{{ button_text }}</button>
+</form>

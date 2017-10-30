@@ -1,0 +1,322 @@
+.clearfix:after {
+  content: " ";
+  /* Older browser do not support empty content */
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  padding: 0;
+  border: 0;
+  background-color: inherit;
+  font-size: 14px !important;
+}
+
+.btn {
+  background-color: #3897f0;
+  border-color: #3897f0;
+}
+
+.facebook-btn {
+  color: white;
+}
+
+.text-hide-custom {
+  visibility: hidden;
+}
+
+.instagram {
+  background-position: 0 0;
+  background-size: 400px 370px;
+  overflow: hidden;
+  background-image: url(../icons.png);
+}
+
+.instagram-main {
+  background-position: -176px 0;
+  background-size: 395px 371px;
+  width: 176px;
+  height: 35px;
+  overflow: hidden;
+  background-image: url(../icons.png);
+}
+
+.background-white {
+  background-color: #fefefe;
+}
+
+.facebook-icon {
+  color: transparent;
+  background-image: url(../icons.png);
+  display: inline-block;
+  margin-right: 8px;
+  position: relative;
+  background-position: -379px 0;
+  background-size: 395px 371px;
+  background-repeat: no-repeat;
+  height: 16px;
+  width: 16px;
+}
+
+.inline {
+  display: inline;
+}
+
+.font-size-md {
+  font-size: 24px !important;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+body {
+  font-size: 14px !important;
+  background-color: #f1f1f1;
+}
+
+.container {
+  background-color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: 600px;
+}
+
+.body-container {
+  background-color: #fafafa;
+  padding-top: 70px;
+}
+
+.padding-lg-container {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.padding-md-container {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.padding-sm-container {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.margin-xs-top {
+  margin-top: 10px;
+}
+
+.form-control {
+  background-color: #fafafa;
+}
+
+.padding-side-sm-container {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.padding-xs-container {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.padding-full-md-container {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+/* navbar */
+.navbar {
+  background-color: white;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.form-control {
+  font-size: 1em;
+}
+
+.user-icon {
+  font-size: 24px !important;
+  color: #003569;
+  font-weight: 100;
+}
+
+.user-icon :hover {
+  text-decoration: none;
+}
+
+.user-icon-heart {
+  display: block;
+  background-position: -353px -151px;
+  background-image: url(../icons.png);
+  background-size: 395px 371px;
+  height: 24px;
+  width: 24px;
+}
+
+.user-icon-user {
+  display: block;
+  background-position: -353px -226px;
+  background-image: url(../icons.png);
+  background-size: 395px 371px;
+  height: 24px;
+  width: 24px;
+}
+
+.display-inline {
+  display: inline;
+}
+
+input {
+  outline: none;
+  box-sizing: border-box;
+}
+
+.instagram-container {
+  max-width: 75%;
+}
+
+.post-container {
+  width: 600px;
+  margin: 0 auto;
+  background-color: white;
+  border: 0.5px solid #f1f1f1;
+}
+
+.comment-form-container {
+  border-top: 1px solid #e1e1e1;
+  position: relative;
+  margin: 0 auto;
+}
+
+.margin-width-container {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.comment-form {
+  width: 95%;
+  height: 58px;
+  float: left;
+}
+
+.comment-form:focus {
+  border: 0;
+}
+
+.comment-form:active {
+  border: 0;
+}
+
+#navbarToggler {
+  margin-left: auto;
+}
+
+.navbar-nav {
+  align-items: center;
+}
+
+.comment {
+  word-wrap: break-word;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#id_content {
+  width: 100%;
+  border: 0;
+  height: 100%;
+  word-wrap: break-word;
+}
+
+.post-options {
+  float: right;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  border: 0;
+  background-color: inherit;
+}
+
+.post-options:hover {
+  cursor: pointer;
+}
+
+.post-modal-option {
+  width: 100%;
+  background-color: inherit;
+  border: 1px solid #efefef;
+  box-sizing: border-box;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.post-modal-option:hover {
+  background-color: #f1f1f1;
+  outline-color: black;
+  cursor: pointer;
+}
+
+.sign-up-row {
+  text-align: center;
+}
+
+.textalign-right {
+  text-align: right;
+}
+
+.textalign-center {
+  text-align: center;
+}
+
+.reset-margin {
+  margin: 0;
+}
+
+.float-right {
+  float: right;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.sidepadding-sm-container {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.sidepadding-md-container {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.sign-up-col {
+  max-width: 30%;
+  margin: 0 auto;
+}
+
+.img-fluid {
+  max-width: inherit;
+  max-height: 600px;
+}
+
+.col-centered {
+  margin: 0 auto;
+}
