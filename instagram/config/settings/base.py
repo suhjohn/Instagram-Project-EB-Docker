@@ -18,18 +18,18 @@ DEBUG = False
 # Paths
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # instagraom_project/instagram
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 CONFIG_SECRET_DIR = os.path.join(ROOT_DIR, '.config_secret')
+CONFIG_SECRET_COMMON_FILE = os.path.join(CONFIG_SECRET_DIR, 'settings_common.json')
+CONFIG_SECRET_DEV_FILE = os.path.join(CONFIG_SECRET_DIR, 'settings_dev.json')
+CONFIG_SECRET_DEPLOY_FILE = os.path.join(CONFIG_SECRET_DIR, 'settings_deploy.json')
 
-with open(os.path.join(CONFIG_SECRET_DIR, 'settings_common.json'))as f:
-    config_secret_common_str = f.read()
-    f.close()
-config_secret_common = json.loads(config_secret_common_str)
+config_secret_common = json.loads(open(CONFIG_SECRET_COMMON_FILE).read())
 
 # instagram_project/instagram/media
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join(ROOT_DIR, ".media")
 MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.path.join(ROOT_DIR, ".static_root")
@@ -40,24 +40,12 @@ STATICFILES_DIRS = [
 ]
 
 
-# Secret Files / AWS
-AWS_ACCESS_KEY_ID = config_secret_common['aws']['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = config_secret_common['aws']['AWS_SECRET_ACCESS_KEY']
-AWS_STORAGE_BUCKET_NAME = config_secret_common['aws']['AWS_STORAGE_BUCKET_NAME']
-DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
-STATICFILES_STORAGE = 'config.storages.StaticStorage'
-STATICFILES_LOCATION = 'static'
-MEDIAFILES_LOCATION = 'media'
-
 # DB Related
 WSGI_APPLICATION = 'config.wsgi.application'
-if DEBUG == True:
-    DATABASES = config_secret_common['django']['local_databases']
-else:
-    DATABASES = config_secret_common['django']['deploy_databases']
 
 # User model
 AUTH_USER_MODEL = 'member.User'
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -135,11 +123,12 @@ TEMPLATES = [
 ]
 
 
+SECRET_KEY = config_secret_common['django']['secret_key']
+
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-SECRET_KEY = config_secret_common['django']['secret_key']
 
