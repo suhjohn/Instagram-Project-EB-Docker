@@ -9,7 +9,7 @@ RUN /root/.pyenv/versions/app/bin/pip install -r\
     /srv/app/requirements.txt
 
 # pyenv local 설정
-WORKDIR /srv/app
+WORKDIR /srv/app/instagram
 RUN /root/.pyenv/versions/app/bin/python manage.py collectstatic --noinput
 RUN /root/.pyenv/versions/app/bin/python manage.py migrate --noinput
 
