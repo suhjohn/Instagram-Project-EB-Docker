@@ -29,3 +29,5 @@ RUN cp /srv/app/.config/supervisor/* \
     /etc/supervisor/conf.d/
 
 CMD supervisord -n
+
+EXPOSE 80
