@@ -10,7 +10,8 @@ RUN /root/.pyenv/versions/app/bin/pip install -r\
 
 # pyenv local 설정
 WORKDIR /srv/app
-RUN pyenv local app
+RUN /root/.pyenv/versions/app/bin/python manage.py collectstatic --noinput
+RUN /root/.pyenv/versions/app/bin/python manage.py migrate --noinput
 
 # Nginx
 RUN cp /srv/app/.config/nginx/nginx.conf \
