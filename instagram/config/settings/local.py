@@ -9,6 +9,7 @@ ALLOWED_HOSTS = [
     '.djangostagram.net'
 ]
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

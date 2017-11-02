@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model, logout as django_logout, login a
 from django.urls import reverse
 
 import post
-from config import settings
+from django.conf import settings
 from .forms import SignUpForm, LoginForm
 
 # Create your views here.
