@@ -1,7 +1,5 @@
-FROM azelf/base
+FROM suhjohn/base
 MAINTAINER johnsuh94@gmail.com
-
-
 
 # pip
 ENV LANG C.UTF-8
