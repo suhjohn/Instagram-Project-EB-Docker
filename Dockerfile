@@ -9,9 +9,8 @@ RUN /root/.pyenv/versions/app/bin/pip install -r\
     /srv/app/requirements.txt
 
 # pyenv local 설정
-WORKDIR /srv/app/instagram
-RUN /root/.pyenv/versions/app/bin/python manage.py collectstatic --noinput
-RUN /root/.pyenv/versions/app/bin/python manage.py migrate --noinput
+WORKDIR /srv/app
+RUN pyenv local app
 
 # Nginx
 RUN cp /srv/app/.config/nginx/nginx.conf \
@@ -24,6 +23,11 @@ RUN ln -sf /etc/nginx/sites-available/app.conf \
 
 # uWSGI
 RUN mkdir -p /var/log/uwsgi/app
+
+# pyenv local 설정
+WORKDIR /srv/app/instagram
+RUN /root/.pyenv/versions/app/bin/python manage.py collectstatic --noinput
+RUN /root/.pyenv/versions/app/bin/python manage.py migrate --noinput
 
 # supervisor
 RUN cp /srv/app/.config/supervisor/* \
