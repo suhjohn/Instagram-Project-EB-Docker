@@ -3,6 +3,7 @@ MAINTAINER johnsuh94@gmail.com
 
 # pip
 ENV LANG C.UTF-8
+ENV DJANGO_SETTINGS_MODULE config.settings.dev
 
 COPY . /srv/app
 RUN /root/.pyenv/versions/app/bin/pip install -r\
@@ -32,7 +33,6 @@ RUN /root/.pyenv/versions/app/bin/python manage.py migrate --noinput
 # supervisor
 RUN cp /srv/app/.config/dev/supervisor/* \
     /etc/supervisor/conf.d/
-
 CMD supervisord -n
 
 EXPOSE 80
