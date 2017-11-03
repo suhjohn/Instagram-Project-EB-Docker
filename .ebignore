@@ -226,7 +226,12 @@ venv.bak/
 .config_secret/
 .static_root/
 media/
+.media/
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# ebignore
+!.config_secret/
