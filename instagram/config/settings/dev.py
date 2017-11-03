@@ -19,3 +19,10 @@ DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
 STATICFILES_STORAGE = 'config.storages.StaticStorage'
 
 DATABASES = config_secret['django']['databases']
+
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.djangostagram.net',
+    '.elasticbeanstalk.com'
+]
