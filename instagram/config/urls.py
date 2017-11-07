@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^$', landing_page, name='landing_page'),
     url(r'^post/', include('post.urls', namespace='post')),
     url(r'^member/', include('member.urls', namespace='member')),
+    # url(r'^api/post/$', )
 ]
 urlpatterns += static(
     settings.MEDIA_URL,
