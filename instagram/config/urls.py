@@ -18,6 +18,7 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 
+from post.apis import PostList, PostDetail
 from .views import landing_page
 
 urlpatterns = [
@@ -25,7 +26,9 @@ urlpatterns = [
     url(r'^$', landing_page, name='landing_page'),
     url(r'^post/', include('post.urls', namespace='post')),
     url(r'^member/', include('member.urls', namespace='member')),
-    # url(r'^api/post/$', )
+    url(r'^api/post/$', PostList.as_view(), name='api-post'),
+    url(r'^api/post/(?P<pk>\d+)/$', PostDetail.as_view(), name='api_post_detail'),
+
 ]
 urlpatterns += static(
     settings.MEDIA_URL,
