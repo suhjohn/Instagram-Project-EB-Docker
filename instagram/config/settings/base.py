@@ -62,8 +62,18 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'member.custom_backend.UsernameLoginBackend',  # our custom authentication backend
+
+    # custom authentication backend
+    'member.custom_backend.UsernameLoginBackend',
+    'member.custom_backend.FacebookBackend',
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
 
 # Facebook Login
 FACEBOOK_APP_ID = config_secret_common['facebook']['app_id']
@@ -87,6 +97,7 @@ INSTALLED_APPS = [
 
     'django_extensions',
     'rest_framework',
+    'rest_framework.authtoken',
     'storages',
 
     'member',

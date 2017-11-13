@@ -1,13 +1,13 @@
 # PostList를 리턴하는 APIView
 from django.http import Http404
-from rest_framework import status, generics, mixins
+from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import PostSerializer
 from .models import Post
+from .serializers import PostSerializer
 
-#
+
 # class PostList(APIView):
 #
 #     def get(self, request):
@@ -52,8 +52,8 @@ class PostDetail(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
     def delete(self, request, pk, format=None):
         post = self.get_object(pk)
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+

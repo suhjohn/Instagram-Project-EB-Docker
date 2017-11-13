@@ -23,6 +23,10 @@
         scope={{ facebook_app_scope }}&
         redirect_uri={{ request.scheme }}://{{ request.META.HTTP_HOST }}{% url 'member:facebook_login' %}"
                        class="facebook-btn btn btn-block "><p class="facebook-icon">F</p>Login with Facebook</a>
+                                        <a href="https://www.facebook.com/v2.10/dialog/oauth?client_id={{ facebook_app_id }}&
+        scope={{ facebook_app_scope }}&
+        redirect_uri={{ request.scheme }}://{{ request.META.HTTP_HOST }}{% url 'member:front-facebook-login' %}"
+                       class="facebook-btn btn btn-block "><p class="facebook-icon">F</p>Login with Front-End API Facebook</a>
                 </div>
 
                 <div class="padding-sm-container background-white margin-xs-top">

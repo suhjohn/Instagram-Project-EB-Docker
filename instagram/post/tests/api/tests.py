@@ -1,12 +1,15 @@
+import filecmp
 import io
 from random import randint
 
+from PIL import Image
 from django.contrib.auth import get_user_model
 from django.core.files import File
 from django.urls import reverse, resolve
 from rest_framework import status
-from rest_framework.test import APILiveServerTestCase
+from rest_framework.test import APILiveServerTestCase, force_authenticate
 
+from config.settings import STATICFILES_DIRS, STATIC_DIR
 from post.apis import PostList
 from post.models import Post
 
@@ -17,6 +20,14 @@ class PostListViewTest(APILiveServerTestCase):
     URL_API_POST_LIST_NAME = 'api-post'
     URL_API_POST_LIST = '/api/post/'
     VIEW = PostList
+
+    def generate_photo_file(self):
+        file = io.BytesIO()
+        image = Image.new('RGBA', size=(100, 100), color=(155, 0, 0))
+        image.save(file, 'png')
+        file.name = 'test.png'
+        file.seek(0)
+        return file
 
     @staticmethod
     def create_user(username='dummy'):
@@ -68,7 +79,7 @@ class PostListViewTest(APILiveServerTestCase):
         :return:
         """
         user = self.create_user()
-        num_author_none_posts = randint(0,10)
+        num_author_none_posts = randint(0, 10)
         num_posts = randint(0, 10)
         for i in range(num_author_none_posts):
             self.create_post()
@@ -77,6 +88,24 @@ class PostListViewTest(APILiveServerTestCase):
 
         response = self.client.get(self.URL_API_POST_LIST)
         self.assertEqual(len(response.data), num_posts)
+
+    def test_create_post(self):
+        """
+        Post Create가 되는지 확인
+        :return:
+        """
+        user= self.create_user()
+        self.client.force_authenticate(user=user)
+        photo = self.generate_photo_file()
+        data = {
+            "photo": photo,
+        }
+        response = self.client.post(self.URL_API_POST_LIST, data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Post.objects.count(), 1)
+        print(response.data)
+        post = Post.objects.get(pk=response.data['pk'])
+        # 업로드 시도한 파일 == 파일
 
 #
 # """
