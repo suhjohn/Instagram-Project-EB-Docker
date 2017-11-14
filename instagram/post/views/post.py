@@ -1,15 +1,23 @@
-from django.http import HttpResponse, Http404, HttpResponseForbidden
-from django.shortcuts import render, redirect, get_object_or_404
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import authentication, permissions
 from django.contrib.auth.models import User
+from django.http import HttpResponseForbidden
+from django.shortcuts import render, redirect, get_object_or_404
+from rest_framework import authentication, permissions
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 # Create your views here.
 from member.decorators import login_required
-from .forms import PostForm, PostCommentForm
-from .models import Post, PostComment
+from ..forms import PostForm, PostCommentForm
+from ..models import Post
+
+__all__ = [
+    "post_list",
+    "post_create",
+    "post_delete",
+    "post_detail",
+    "post_like_toggle",
+    "PostLikeAPIToggle",
+]
 
 
 def post_list(request):
@@ -114,28 +122,3 @@ class PostLikeAPIToggle(APIView):
         """
         usernames = [user.username for user in User.objects.all()]
         return Response(usernames)
-
-
-def add_comment(request, post_pk):
-    if bool(request.user.is_authenticated):
-        post = Post.objects.get(pk=post_pk)
-        comment = PostCommentForm(request.POST)
-        next = request.GET.get('next', '').strip()
-        if comment.is_valid():
-            new_comment = comment.save(commit=False)
-            new_comment.author = request.user
-            new_comment.post = post
-            new_comment.save()
-        return redirect(next)
-    else:
-        return redirect('member:login')
-
-
-def delete_comment(request, comment_pk):
-    next = request.GET.get('next', '').strip()
-    comment = get_object_or_404(PostComment, pk=comment_pk)
-    if comment.author == request.user:
-        comment.delete()
-        return redirect(next)
-    else:
-        return HttpResponseForbidden()

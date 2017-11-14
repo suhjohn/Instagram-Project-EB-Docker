@@ -16,11 +16,18 @@ class UserSerializer(serializers.ModelSerializer):
 class SignupSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
-    token = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('username', 'password1', 'password2', 'first_name', 'last_name', 'email', 'token')
+        fields = (
+            'username',
+            'password1',
+            'password2',
+            'first_name',
+            'last_name',
+            'email',
+            'token'
+        )
 
     def validate_username(self, username):
         # 이미 존재하는 유저네임일 경우
@@ -44,6 +51,15 @@ class SignupSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
         )
 
-    def get_token(self, obj):
-        return Token.objects.get_or_create(user=obj)[0].key
-
+    def to_representation(self, instance):
+        """
+        최종 결과 - search "how to add element at end of serializer"
+        :param instance:
+        :return:
+        """
+        ret = super().to_representation()
+        data = {
+            'user': ret,
+            'token': instance.token
+        }
+        return data
