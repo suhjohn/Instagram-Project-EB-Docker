@@ -1,10 +1,12 @@
 # PostList를 리턴하는 APIView
-from django.http import Http404
-from rest_framework import status, generics
+from rest_framework import generics, permissions
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
+from member.serializers import UserSerializer
 from .models import Post
 from .serializers import PostSerializer
+from utils.permissions import *
 
 
 # class PostList(APIView):
@@ -26,11 +28,40 @@ from .serializers import PostSerializer
 class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
-    query = Post.objects.all()
+    queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+        # author 가 아니면 지울 수 없도록 utils.permissions
+        IsAuthorOrReadOnly,
+    )
+
+
+class PostLikeToggle(generics.GenericAPIView):
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+    )
+    queryset = Post.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        instance = self.get_object()
+        user = request.user
+        if user.like_posts.filter(pk=instance.pk):
+            user.like_posts.remove(instance)
+            like_status = False
+        else:
+            user.like_posts.add(instance)
+            like_status = True
+        data = {
+            'user': UserSerializer(user).data,
+            'post': PostSerializer(instance).data,
+            'like_status': like_status,
+         }
+        return Response(data)

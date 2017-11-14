@@ -10,7 +10,7 @@ from member.decorators import login_required
 from ..forms import PostForm, PostCommentForm
 from ..models import Post
 
-__all__ = [
+__all_=[
     "post_list",
     "post_create",
     "post_delete",
@@ -18,7 +18,6 @@ __all__ = [
     "post_like_toggle",
     "PostLikeAPIToggle",
 ]
-
 
 def post_list(request):
     """

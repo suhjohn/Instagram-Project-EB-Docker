@@ -63,3 +63,4 @@ class SignupSerializer(serializers.ModelSerializer):
             'token': instance.token
         }
         return data
+
