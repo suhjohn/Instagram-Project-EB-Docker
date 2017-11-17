@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
-from rest_framework.authtoken.models import Token
 
 User = get_user_model()
 
@@ -63,4 +62,3 @@ class SignupSerializer(serializers.ModelSerializer):
             'token': instance.token
         }
         return data
-
